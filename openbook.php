@@ -8,6 +8,7 @@ Author: John Miedema
 Author URI: http://johnmiedema.com
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: openbook4wordpress
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -24,8 +25,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-include_once('libraries/openbook_language.php'); //include before constants
-include_once('libraries/openbook_constants.php');
 include_once('libraries/openbook_html.php');
 include_once('libraries/openbook_openlibrary.php');
 include_once('libraries/openbook_utilities.php');
@@ -36,43 +35,49 @@ if ( ! defined( 'ABSPATH' ) )
 class MyOpenBook
 {
 	function __construct() {
-		register_activation_hook(__FILE__, 'ob_activation_check');
-		register_deactivation_hook(__FILE__, 'ob_deactivation');
+		add_action( 'init', 'openbook_init_translations_and_constants' );
+		register_activation_hook(__FILE__, 'openbook_activation_check');
+		register_deactivation_hook(__FILE__, 'openbook_deactivation');
 		add_action('admin_menu', 'openbook_add_pages');
-		add_action('admin_head', 'my_add_mce_button_openbook');
+		add_action('admin_head', 'openbook_add_mce_button');
 		add_shortcode('openbook', 'openbook_insertbookdata');
 		add_filter('widget_text', 'do_shortcode'); //allows shortcodes in widgets
 		add_action( 'admin_enqueue_scripts', 'openbook_add_stylesheet' ); //add stylesheet for WordPress visual editor
 		add_action('wp_enqueue_scripts', 'openbook_add_stylesheet'); //add stylesheet for final display
+		add_action( 'admin_head', 'openbook_admin_js_variables' ); //output AJAX nonce for visual editor
+		add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'openbook_filter_plugin_actions_links', 10, 2 );
 	}
 }
 
+// Initialise translation and constants on init action hook
+function openbook_init_translations_and_constants() {
+	load_plugin_textdomain( 'openbook4wordpress', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+	include_once('libraries/openbook_language.php'); //include before constants
+	include_once('libraries/openbook_constants.php');
+}
+
+//outputs AJAX nonce for the visual editor button
+function openbook_admin_js_variables() {
+	?>
+	<script type="text/javascript">
+		var openbook_ajax_nonce = <?php echo wp_json_encode( wp_create_nonce( 'openbook_ajax_action' ) ); ?>;
+	</script>
+	<?php
+}
+
 //handles any processing when the plugin is activated
-function ob_activation_check() {
-
-	$plugin = isset($_GET['plugin']) ? trim($_GET['plugin']) : '';
-
-	//if json_decode is missing (< PHP5.2) use local json library
-	if(!function_exists('json_decode')) {
-		include_once('libraries/openbook_json.php');
-		function json_decode($data) {
-			$json = new Services_JSON_ob();
-			return( $json->decode($data) );
-		}
-	}
-
-	//test if cURL is enabled
-	if (!function_exists('curl_init')) {
-		deactivate_plugins($plugin);
-		wp_die(OB_ENABLECURL_LANG);
-	}
+function openbook_activation_check() {
+	openbook_init_translations_and_constants();
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$plugin = isset($_GET['plugin']) ? sanitize_text_field( wp_unslash( $_GET['plugin'] ) ) : '';
 
 	//initialize options
 	openbook_utilities_setDefaultOptions();
 }
 
 //handles any cleanup when plugin is deactivated
-function ob_deactivation() {
+function openbook_deactivation() {
+	openbook_init_translations_and_constants();
 	$savetemplates = get_option(OB_OPTION_SAVETEMPLATES_NAME);
 	if ($savetemplates!=OB_HTML_CHECKED_TRUE) {
 		openbook_utilities_deleteOptions();
@@ -87,9 +92,10 @@ function openbook_add_pages() {
 // displays the page content for the options submenu
 function openbook_options_page() {
 	require_once('openbook_options.php');
+	openbook_render_options_page();
 }
 
-function my_add_mce_button_openbook() {
+function openbook_add_mce_button() {
 
 	// check user permissions
 	if ( !current_user_can( 'edit_posts' ) && !current_user_can( 'edit_pages' ) ) {
@@ -98,28 +104,28 @@ function my_add_mce_button_openbook() {
 
 	// check if WYSIWYG is enabled
 	if ( 'true' == get_user_option( 'rich_editing' ) ) {
-		add_filter( 'mce_external_plugins', 'my_add_tinymce_plugin_openbook' );
-		add_filter( 'mce_buttons', 'my_register_mce_button_openbook' );
-		add_filter('mce_css', 'filter_mce_css');
+		add_filter( 'mce_external_plugins', 'openbook_add_tinymce_plugin' );
+		add_filter( 'mce_buttons', 'openbook_register_mce_button' );
+		add_filter('mce_css', 'openbook_filter_mce_css');
 		openbook_add_stylesheet(); //add stylesheet to the thickbox dialog
 	}
 }
 
 // declare script for new button
-function my_add_tinymce_plugin_openbook( $plugin_array ) {
+function openbook_add_tinymce_plugin( $plugin_array ) {
 	$plugin_array['my_mce_button_openbook'] = plugin_dir_url( __FILE__ ) . 'libraries/openbook_button.js';
 	return $plugin_array;
 }
 
 // register new button in the editor
-function my_register_mce_button_openbook( $buttons ) {
+function openbook_register_mce_button( $buttons ) {
 	array_push( $buttons, 'my_mce_button_openbook' );
 	return $buttons;
 }
 
-function filter_plugin_actions_links($links, $file)
+function openbook_filter_plugin_actions_links($links, $file)
 {
-	$settings_link = $settings_link = '<a href="options-general.php?page=openbook_options.php">' . __('Settings', 'openbook') . '</a>';
+	$settings_link = '<a href="options-general.php?page=openbook_options.php">' . __('Settings', 'openbook4wordpress') . '</a>';
 	array_unshift($links, $settings_link);
 	return $links;
 }
@@ -419,7 +425,7 @@ class openbook_arguments {
 			if ($content != null) {
 				$args = explode(",", $content);
 				$argcount = count($args);
-				if ($argcount==0) throw new Exception(OB_BOOKNUMBERREQUIRED_LANG);
+				if ($argcount==0) throw new Exception( esc_html( OB_BOOKNUMBERREQUIRED_LANG ) );
 
 				$booknumber=$args[0];
 				if ($argcount>=1) $templatenumber=$args[1];
@@ -428,7 +434,7 @@ class openbook_arguments {
 			}
 		}
 
-		if (!$booknumber) throw new Exception(OB_BOOKNUMBERREQUIRED_LANG);
+		if (!$booknumber) throw new Exception( esc_html( OB_BOOKNUMBERREQUIRED_LANG ) );
 
 		//revision number
 		//only applicable for OLID
@@ -446,8 +452,8 @@ class openbook_arguments {
 		elseif ($templatenumber == OB_OPTION_TEMPLATENUMBER_3) $template = trim(get_option(OB_OPTION_TEMPLATE3_NAME));
 		elseif ($templatenumber == OB_OPTION_TEMPLATENUMBER_4) $template = trim(get_option(OB_OPTION_TEMPLATE4_NAME));
 		elseif ($templatenumber == OB_OPTION_TEMPLATENUMBER_5) $template = trim(get_option(OB_OPTION_TEMPLATE5_NAME));
-		else throw new Exception(OB_INVALIDTEMPLATENUMBER_LANG);
-		if (!$template) throw new Exception(OB_INVALIDTEMPLATENUMBER_LANG);
+		else throw new Exception( esc_html( OB_INVALIDTEMPLATENUMBER_LANG ) );
+		if (!$template) throw new Exception( esc_html( OB_INVALIDTEMPLATENUMBER_LANG ) );
 
 		$publisherurl = trim($publisherurl); //don't url encode the url
 
@@ -457,7 +463,7 @@ class openbook_arguments {
 		$findinlibraryimagesrc = trim(get_option(OB_OPTION_FINDINLIBRARY_IMAGESRC_NAME));
 
 		$domain = trim(get_option(OB_OPTION_LIBRARY_DOMAIN_NAME));
-		if (!$domain) throw new Exception(OB_INVALIDDOMAIN_LANG);
+		if (!$domain) throw new Exception( esc_html( OB_INVALIDDOMAIN_LANG ) );
 
 		$timeout = trim(get_option(OB_OPTION_TIMEOUT_NAME));
 		$proxy = trim(get_option(OB_OPTION_PROXY_NAME));
@@ -484,37 +490,43 @@ class openbook_arguments {
 	}
 }
 
-$myopenbook = new MyOpenBook();
+$openbook_plugin = new MyOpenBook();
 
 add_action('wp_ajax_openbook_action', 'openbook_action_callback');
 
 //server-side call for ajax visual editor button
 function openbook_action_callback() {
+	check_ajax_referer( 'openbook_ajax_action', 'security' );
 
-	$booknumber = $_POST['booknumber'];
-	$templatenumber = $_POST['templatenumber'];
-	$publisherurl = $_POST['publisherurl'];
-	$revisionnumber = $_POST['revisionnumber'];
+	$booknumber = isset( $_POST['booknumber'] ) ? sanitize_text_field( wp_unslash( $_POST['booknumber'] ) ) : '';
+	$templatenumber = isset( $_POST['templatenumber'] ) ? sanitize_text_field( wp_unslash( $_POST['templatenumber'] ) ) : '';
+	$publisherurl = isset( $_POST['publisherurl'] ) ? esc_url_raw( wp_unslash( $_POST['publisherurl'] ) ) : '';
+	$revisionnumber = isset( $_POST['revisionnumber'] ) ? sanitize_text_field( wp_unslash( $_POST['revisionnumber'] ) ) : '';
 
-	$shortcode_array = array( 'booknumber' => $booknumber, 'templatenumber' => $templatenumber, 'publisherurl' => $publisherurl, 'revisionnumber' => $revisionnumber);
+	$shortcode_array = array(
+		'booknumber'     => $booknumber,
+		'templatenumber' => $templatenumber,
+		'publisherurl'   => $publisherurl,
+		'revisionnumber' => $revisionnumber
+	);
 
 	$ret = openbook_insertbookdata($shortcode_array, null);
-	echo $ret;
-	die();
+	echo wp_kses_post($ret);
+	wp_die();
 }
 
 //add custom stylesheet
 function openbook_add_stylesheet() {
 	$myStyleUrl = plugins_url('libraries/openbook_style.css', __FILE__); // Respects SSL, Style.css is relative to the current file
-    $myStyleFile = WP_PLUGIN_DIR . '/openbook-book-data/libraries/openbook_style.css';
-    if ( file_exists($myStyleFile) ) {
-    	wp_register_style('openbook', $myStyleUrl);
-        wp_enqueue_style( 'openbook');
-    }
+	$myStyleFile = WP_PLUGIN_DIR . '/openbook-book-data/libraries/openbook_style.css';
+	if ( file_exists($myStyleFile) ) {
+		wp_register_style('openbook4wordpress', $myStyleUrl, array(), '3.6.1');
+		wp_enqueue_style( 'openbook4wordpress');
+	}
 }
 
 //returns stylesheet for visual editor
-function filter_mce_css($url) {
+function openbook_filter_mce_css($url) {
 	if(!empty($url)) $url .= ',';
 	$url .= plugin_dir_url( __FILE__ ) . 'libraries/openbook_style.css';
 	return $url;

@@ -23,6 +23,7 @@ function openbook_button_preview(booknumber, templatenumber, publisherurl, revis
 
 	var data = {
 		action: 'openbook_action',
+		security: typeof openbook_ajax_nonce !== 'undefined' ? openbook_ajax_nonce : '',
 		booknumber: booknumber,
 		templatenumber: templatenumber,
 		publisherurl: publisherurl,

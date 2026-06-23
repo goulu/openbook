@@ -65,30 +65,30 @@ function openbook_utilities_getUrlContents($url, $timeout, $proxy, $proxyport, $
 	if ( is_wp_error($response) ) {
 		$error_message = $response->get_error_message();
 		if ( stripos($error_message, 'timeout') !== false ) {
-			throw new Exception(OB_CURLTIMEOUT_LANG);
+			throw new Exception( esc_html( OB_CURLTIMEOUT_LANG ) );
 		}
 		if ($showerrors == OB_HTML_CHECKED_TRUE) {
-			throw new Exception('HTTP request error - ' . $error_message . ' - ' . $url);
+			throw new Exception( esc_html( 'HTTP request error - ' . $error_message . ' - ' . $url ) );
 		}
-		throw new Exception(OB_CURLERROR_LANG);
+		throw new Exception( esc_html( OB_CURLERROR_LANG ) );
 	}
 
 	$status_code = wp_remote_retrieve_response_code($response);
 	$body = wp_remote_retrieve_body($response);
 
 	if ( stripos($body, 'Server') !== false && stripos($body, 'Error') !== false ) {
-		throw new Exception(OB_OLSERVERERROR_LANG);
+		throw new Exception( esc_html( OB_OLSERVERERROR_LANG ) );
 	}
 
 	if ( $status_code !== 200 ) {
 		if ($showerrors == OB_HTML_CHECKED_TRUE) {
-			throw new Exception('HTTP request error - Status Code: ' . $status_code . ' - ' . $url);
+			throw new Exception( esc_html( 'HTTP request error - Status Code: ' . $status_code . ' - ' . $url ) );
 		}
-		throw new Exception($errmessage);
+		throw new Exception( esc_html( $errmessage ) );
 	}
 
 	if ( empty($body) ) {
-		throw new Exception($errmessage);
+		throw new Exception( esc_html( $errmessage ) );
 	}
 
 	return $body;
@@ -101,6 +101,6 @@ function openbook_utilities_validISBN($testisbn) {
 
 function openbook_utilities_getDomain()
 {
-	return wp_strip_all_tags( isset( $_SERVER["SERVER_NAME"] ) ? $_SERVER["SERVER_NAME"] : '' );
+	return wp_strip_all_tags( isset( $_SERVER["SERVER_NAME"] ) ? wp_unslash( $_SERVER["SERVER_NAME"] ) : '' );
 }
 ?>

@@ -1,9 +1,11 @@
-=== OpenBook Book Data ===
+=== OpenBook ===
 Contributors: johnmiedema, goulu
-Tags: book, books, reading, book reviews, library, libraries, book covers, COinS, OpenURL
+Tags: book, books, reading, library, book covers
 Requires at least: 6.3.0
 Tested up to: 7.0
 Stable tag: 3.6.1
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Displays a book's cover image, title, author, links, and other book data from Open Library.
 
