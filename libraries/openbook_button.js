@@ -70,7 +70,7 @@ function openbook_reset() {
 	tinymce.PluginManager.add('my_mce_button_openbook', function( editor, url ) {
 		editor.addButton('my_mce_button_openbook', {
 			title: 'OpenBook',
-			image: '../wp-content/plugins/openbook-book-data/libraries/openbook_button.gif',  // path to the button's image
+			image: url + '/openbook_button.gif',  // path to the button's image
 			onclick: function() {
 				// triggers the thickbox
 				var width = jQuery(window).width(), H = jQuery(window).height(), W = ( 720 < width ) ? 720 : width;

@@ -3,8 +3,9 @@
 **Contributors:** johnmiedema, goulu  
 **Tags:** book, books, reading, library, book covers  
 **Requires at least:** 6.3.0  
+**Requires PHP:** 7.0  
 **Tested up to:** 7.0  
-**Stable tag:** 3.6.1  
+**Stable tag:** 3.7.0  
 **License:** GPLv2 or later  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -17,7 +18,7 @@ OpenBook is for book reviewers, book bloggers, library webmasters, anyone who wa
 Use the OpenBook button in the WordPress visual editor or insert an OpenBook 'shortcode' with a book number in a WordPress post, page or widget. OpenBook will display a book cover image, author, and other book data from Open Library (http://openlibrary.org). It also displays links to book websites. Users can control the content through templates and styling through a stylesheet. OpenBook inserts COinS to integrate with applications like Zotero. Librarians can point OpenBook to their library records using an OpenURL resolver. 
 
 ### Requirements
-To use OpenBook, your server must use PHP 5 or higher, and cURL must be enabled. 
+To use OpenBook, your server must use PHP 7.0 or higher, and cURL must be enabled. 
 
 ### Reference
 For more details about OpenBook, see the reference article: [OpenBook: A WordPress Plugin for Book Data](https://journal.code4lib.org/articles/105) published in *The Code4Lib Journal*.
@@ -70,6 +71,12 @@ By default, OpenBook will display a book cover image, title, author, and publish
 
 ## Changelog
 
+### 3.7.0
+* Restored the TinyMCE visual editor button and Thickbox modal layout.
+* Corrected asset paths (stylesheet and icon) to be dynamic and support folder renaming.
+* Moved TinyMCE button filters registration to `admin_init` hook.
+* Added standard `Requires PHP` metadata fields.
+
 ### 3.6.0
 * Updated (by AI) for compatibility with WordPress 6.3-6.8 (php 7.00+)
 
@@ -82,3 +89,8 @@ By default, OpenBook will display a book cover image, title, author, and publish
 * Note: if you don't see the button on the toolbar right away, click CTRL-F5 to force a refresh
 * Modified dialog for preview and insert of books
 * HTML is the default option
+
+## Upgrade Notice
+
+### 3.7.0
+This update restores the editor button functionality on modern WordPress versions, resolves asset path loading conflicts, and declares PHP 7.0+ requirements.

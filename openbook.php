@@ -1,11 +1,13 @@
 <?php
 /*
 Plugin Name: OpenBook
-Plugin URI: http://wordpress.org/extend/plugins/openbook-book-data/
+Plugin URI: https://github.com/goulu/openbook
 Description: Displays a book's cover image, title, author, links, and other book data from Open Library.
-Version: 3.6.1
-Author: John Miedema
-Author URI: http://johnmiedema.com
+Version: 3.7.0
+Requires at least: 6.3.0
+Requires PHP: 7.0
+Author: John Miedema and Philippe Guglielmetti 
+Author URI: https://profiles.wordpress.org/goulu/
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: openbook
@@ -39,7 +41,7 @@ class MyOpenBook
 		register_activation_hook(__FILE__, 'openbook_activation_check');
 		register_deactivation_hook(__FILE__, 'openbook_deactivation');
 		add_action('admin_menu', 'openbook_add_pages');
-		add_action('admin_head', 'openbook_add_mce_button');
+		add_action('admin_init', 'openbook_add_mce_button');
 		add_shortcode('openbook', 'openbook_insertbookdata');
 		add_filter('widget_text', 'do_shortcode'); //allows shortcodes in widgets
 		add_action( 'admin_enqueue_scripts', 'openbook_add_stylesheet' ); //add stylesheet for WordPress visual editor
@@ -519,7 +521,7 @@ function openbook_action_callback() {
 //add custom stylesheet
 function openbook_add_stylesheet() {
 	$myStyleUrl = plugins_url('libraries/openbook_style.css', __FILE__); // Respects SSL, Style.css is relative to the current file
-	$myStyleFile = WP_PLUGIN_DIR . '/openbook-book-data/libraries/openbook_style.css';
+	$myStyleFile = plugin_dir_path( __FILE__ ) . 'libraries/openbook_style.css';
 	if ( file_exists($myStyleFile) ) {
 		wp_register_style('openbook', $myStyleUrl, array(), '3.6.1');
 		wp_enqueue_style( 'openbook');
