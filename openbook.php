@@ -8,7 +8,7 @@ Author: John Miedema
 Author URI: http://johnmiedema.com
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: openbook4wordpress
+Text Domain: openbook
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -51,7 +51,8 @@ class MyOpenBook
 
 // Initialise translation and constants on init action hook
 function openbook_init_translations_and_constants() {
-	load_plugin_textdomain( 'openbook4wordpress', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+	// phpcs:ignore PluginCheck.CodeAnalysis.DiscouragedFunctions.load_plugin_textdomainFound
+	load_plugin_textdomain( 'openbook', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 	include_once('libraries/openbook_language.php'); //include before constants
 	include_once('libraries/openbook_constants.php');
 }
@@ -125,7 +126,7 @@ function openbook_register_mce_button( $buttons ) {
 
 function openbook_filter_plugin_actions_links($links, $file)
 {
-	$settings_link = '<a href="options-general.php?page=openbook_options.php">' . __('Settings', 'openbook4wordpress') . '</a>';
+	$settings_link = '<a href="options-general.php?page=openbook_options.php">' . __('Settings', 'openbook') . '</a>';
 	array_unshift($links, $settings_link);
 	return $links;
 }
@@ -520,8 +521,8 @@ function openbook_add_stylesheet() {
 	$myStyleUrl = plugins_url('libraries/openbook_style.css', __FILE__); // Respects SSL, Style.css is relative to the current file
 	$myStyleFile = WP_PLUGIN_DIR . '/openbook-book-data/libraries/openbook_style.css';
 	if ( file_exists($myStyleFile) ) {
-		wp_register_style('openbook4wordpress', $myStyleUrl, array(), '3.6.1');
-		wp_enqueue_style( 'openbook4wordpress');
+		wp_register_style('openbook', $myStyleUrl, array(), '3.6.1');
+		wp_enqueue_style( 'openbook');
 	}
 }
 

@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Class OpenBook_TextDomain_Load_Test
  *
@@ -32,7 +36,7 @@ class OpenBook_TextDomain_Load_Test extends WP_UnitTestCase {
 	 * Callback to catch doing_it_wrong occurrences.
 	 */
 	public function catch_doing_it_wrong( $function_name, $message, $version ) {
-		if ( false !== stripos( $message, 'openbook4wordpress' ) || false !== stripos( $function_name, '_load_textdomain_just_in_time' ) ) {
+		if ( false !== stripos( $message, 'openbook' ) || false !== stripos( $function_name, '_load_textdomain_just_in_time' ) ) {
 			$this->doing_it_wrong_triggered = true;
 			$this->doing_it_wrong_message = $message;
 		}

@@ -4,6 +4,9 @@
  * Ensures openbook.php and its dependencies do not trigger translations before the init hook.
  */
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals
+// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_debug_backtrace
+
 if ( php_sapi_name() === 'cli' ) {
 	define( 'ABSPATH', true );
 }
@@ -19,7 +22,7 @@ $textdomain_loaded_called = false;
 
 function __( $text, $domain = 'default' ) {
 	global $early_translation_calls;
-	if ( $domain === 'openbook4wordpress' ) {
+	if ( $domain === 'openbook' ) {
 		$early_translation_calls[] = array(
 			'text' => $text,
 			'backtrace' => debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 5 )
@@ -30,7 +33,7 @@ function __( $text, $domain = 'default' ) {
 
 function load_plugin_textdomain( $domain, $deprecated = false, $plugin_rel_path = false ) {
 	global $textdomain_loaded_called;
-	if ( $domain === 'openbook4wordpress' ) {
+	if ( $domain === 'openbook' ) {
 		$textdomain_loaded_called = true;
 	}
 	return true;

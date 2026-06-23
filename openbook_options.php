@@ -45,27 +45,27 @@ function openbook_render_options_page() {
 	$showerrors = get_option(OB_OPTION_SHOWERRORS_NAME);
 	$savetemplates = get_option(OB_OPTION_SAVETEMPLATES_NAME);
 
-	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+	if ( isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 
 		// Nonce verification
 		if ( ! isset( $_POST['openbook_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['openbook_nonce'] ), 'openbook_options_update' ) ) {
 			wp_die( 'Security check failed.' );
 		}
 
-		if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'save') {
+		if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] === 'save' ) {
 
-			$template1 = wp_kses_post( wp_unslash( $_POST[OB_OPTION_TEMPLATE1_NAME] ) );
-			$template2 = wp_kses_post( wp_unslash( $_POST[OB_OPTION_TEMPLATE2_NAME] ) );
-			$template3 = wp_kses_post( wp_unslash( $_POST[OB_OPTION_TEMPLATE3_NAME] ) );
-			$template4 = wp_kses_post( wp_unslash( $_POST[OB_OPTION_TEMPLATE4_NAME] ) );
-			$template5 = wp_kses_post( wp_unslash( $_POST[OB_OPTION_TEMPLATE5_NAME] ) );
-			$openurlresolver = esc_url_raw( wp_unslash( $_POST[OB_OPTION_FINDINLIBRARY_OPENURLRESOLVER_NAME] ) );
-			$findinlibraryphrase = sanitize_text_field( wp_unslash( $_POST[OB_OPTION_FINDINLIBRARY_PHRASE_NAME] ) );
-			$findinlibraryimagesrc = esc_url_raw( wp_unslash( $_POST[OB_OPTION_FINDINLIBRARY_IMAGESRC_NAME] ) );
-			$domain = esc_url_raw( wp_unslash( $_POST[OB_OPTION_LIBRARY_DOMAIN_NAME] ) );
-			$proxy = sanitize_text_field( wp_unslash( $_POST[OB_OPTION_PROXY_NAME] ) );
-			$proxyport = sanitize_text_field( wp_unslash( $_POST[OB_OPTION_PROXYPORT_NAME] ) );
-			$timeout = sanitize_text_field( wp_unslash( $_POST[OB_OPTION_TIMEOUT_NAME] ) );
+			$template1 = isset( $_POST[OB_OPTION_TEMPLATE1_NAME] ) ? wp_kses_post( wp_unslash( $_POST[OB_OPTION_TEMPLATE1_NAME] ) ) : '';
+			$template2 = isset( $_POST[OB_OPTION_TEMPLATE2_NAME] ) ? wp_kses_post( wp_unslash( $_POST[OB_OPTION_TEMPLATE2_NAME] ) ) : '';
+			$template3 = isset( $_POST[OB_OPTION_TEMPLATE3_NAME] ) ? wp_kses_post( wp_unslash( $_POST[OB_OPTION_TEMPLATE3_NAME] ) ) : '';
+			$template4 = isset( $_POST[OB_OPTION_TEMPLATE4_NAME] ) ? wp_kses_post( wp_unslash( $_POST[OB_OPTION_TEMPLATE4_NAME] ) ) : '';
+			$template5 = isset( $_POST[OB_OPTION_TEMPLATE5_NAME] ) ? wp_kses_post( wp_unslash( $_POST[OB_OPTION_TEMPLATE5_NAME] ) ) : '';
+			$openurlresolver = isset( $_POST[OB_OPTION_FINDINLIBRARY_OPENURLRESOLVER_NAME] ) ? esc_url_raw( wp_unslash( $_POST[OB_OPTION_FINDINLIBRARY_OPENURLRESOLVER_NAME] ) ) : '';
+			$findinlibraryphrase = isset( $_POST[OB_OPTION_FINDINLIBRARY_PHRASE_NAME] ) ? sanitize_text_field( wp_unslash( $_POST[OB_OPTION_FINDINLIBRARY_PHRASE_NAME] ) ) : '';
+			$findinlibraryimagesrc = isset( $_POST[OB_OPTION_FINDINLIBRARY_IMAGESRC_NAME] ) ? esc_url_raw( wp_unslash( $_POST[OB_OPTION_FINDINLIBRARY_IMAGESRC_NAME] ) ) : '';
+			$domain = isset( $_POST[OB_OPTION_LIBRARY_DOMAIN_NAME] ) ? esc_url_raw( wp_unslash( $_POST[OB_OPTION_LIBRARY_DOMAIN_NAME] ) ) : '';
+			$proxy = isset( $_POST[OB_OPTION_PROXY_NAME] ) ? sanitize_text_field( wp_unslash( $_POST[OB_OPTION_PROXY_NAME] ) ) : '';
+			$proxyport = isset( $_POST[OB_OPTION_PROXYPORT_NAME] ) ? sanitize_text_field( wp_unslash( $_POST[OB_OPTION_PROXYPORT_NAME] ) ) : '';
+			$timeout = isset( $_POST[OB_OPTION_TIMEOUT_NAME] ) ? sanitize_text_field( wp_unslash( $_POST[OB_OPTION_TIMEOUT_NAME] ) ) : '';
 			
 			$showerrors = isset($_POST[OB_OPTION_SHOWERRORS_NAME]) && $_POST[OB_OPTION_SHOWERRORS_NAME] == 'on' ? OB_HTML_CHECKED_TRUE : OB_HTML_CHECKED_FALSE;
 			$savetemplates = isset($_POST[OB_OPTION_SAVETEMPLATES_NAME]) && $_POST[OB_OPTION_SAVETEMPLATES_NAME] == 'on' ? OB_HTML_CHECKED_TRUE : OB_HTML_CHECKED_FALSE;
