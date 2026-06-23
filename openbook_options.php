@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+?>
 <style>
 .pifButton {
 	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
@@ -52,30 +57,30 @@ $timeout = get_option(OB_OPTION_TIMEOUT_NAME);
 $showerrors = get_option(OB_OPTION_SHOWERRORS_NAME);
 $savetemplates = get_option(OB_OPTION_SAVETEMPLATES_NAME);
 
-//files affected when you add an option:
-//language values in openbook_language.php
-//constants in open_constants.php
-//add it to openbook_utilities_setDefaultOptions
-//scoop it in openbook_getArguments
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-	$template1 = stripslashes($_POST[OB_OPTION_TEMPLATE1_NAME]);
-	$template2 = stripslashes($_POST[OB_OPTION_TEMPLATE2_NAME]);
-	$template3 = stripslashes($_POST[OB_OPTION_TEMPLATE3_NAME]);
-	$template4 = stripslashes($_POST[OB_OPTION_TEMPLATE4_NAME]);
-	$template5 = stripslashes($_POST[OB_OPTION_TEMPLATE5_NAME]);
-	$openurlresolver = $_POST[OB_OPTION_FINDINLIBRARY_OPENURLRESOLVER_NAME];
-	$findinlibraryphrase = $_POST[OB_OPTION_FINDINLIBRARY_PHRASE_NAME];
-	$findinlibraryimagesrc = $_POST[OB_OPTION_FINDINLIBRARY_IMAGESRC_NAME];
-	$domain = $_POST[OB_OPTION_LIBRARY_DOMAIN_NAME];
-	$proxy = $_POST[OB_OPTION_PROXY_NAME];
-	$proxyport = $_POST[OB_OPTION_PROXYPORT_NAME];
-	$timeout = $_POST[OB_OPTION_TIMEOUT_NAME];
-	$showerrors = $_POST[OB_OPTION_SHOWERRORS_NAME]; if ($showerrors=='on') $showerrors=OB_HTML_CHECKED_TRUE;
-	$savetemplates = $_POST[OB_OPTION_SAVETEMPLATES_NAME]; if ($savetemplates=='on') $savetemplates=OB_HTML_CHECKED_TRUE;
+	// Nonce verification
+	if ( ! isset( $_POST['openbook_nonce'] ) || ! wp_verify_nonce( $_POST['openbook_nonce'], 'openbook_options_update' ) ) {
+		wp_die( 'Security check failed.' );
+	}
 
-	if ($_REQUEST['action'] == 'save') {
+	if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'save') {
+
+		$template1 = wp_kses_post( wp_unslash( $_POST[OB_OPTION_TEMPLATE1_NAME] ) );
+		$template2 = wp_kses_post( wp_unslash( $_POST[OB_OPTION_TEMPLATE2_NAME] ) );
+		$template3 = wp_kses_post( wp_unslash( $_POST[OB_OPTION_TEMPLATE3_NAME] ) );
+		$template4 = wp_kses_post( wp_unslash( $_POST[OB_OPTION_TEMPLATE4_NAME] ) );
+		$template5 = wp_kses_post( wp_unslash( $_POST[OB_OPTION_TEMPLATE5_NAME] ) );
+		$openurlresolver = esc_url_raw( wp_unslash( $_POST[OB_OPTION_FINDINLIBRARY_OPENURLRESOLVER_NAME] ) );
+		$findinlibraryphrase = sanitize_text_field( wp_unslash( $_POST[OB_OPTION_FINDINLIBRARY_PHRASE_NAME] ) );
+		$findinlibraryimagesrc = esc_url_raw( wp_unslash( $_POST[OB_OPTION_FINDINLIBRARY_IMAGESRC_NAME] ) );
+		$domain = esc_url_raw( wp_unslash( $_POST[OB_OPTION_LIBRARY_DOMAIN_NAME] ) );
+		$proxy = sanitize_text_field( wp_unslash( $_POST[OB_OPTION_PROXY_NAME] ) );
+		$proxyport = sanitize_text_field( wp_unslash( $_POST[OB_OPTION_PROXYPORT_NAME] ) );
+		$timeout = sanitize_text_field( wp_unslash( $_POST[OB_OPTION_TIMEOUT_NAME] ) );
+		
+		$showerrors = isset($_POST[OB_OPTION_SHOWERRORS_NAME]) && $_POST[OB_OPTION_SHOWERRORS_NAME] == 'on' ? OB_HTML_CHECKED_TRUE : OB_HTML_CHECKED_FALSE;
+		$savetemplates = isset($_POST[OB_OPTION_SAVETEMPLATES_NAME]) && $_POST[OB_OPTION_SAVETEMPLATES_NAME] == 'on' ? OB_HTML_CHECKED_TRUE : OB_HTML_CHECKED_FALSE;
 
 		validateRequired(OB_OPTION_TEMPLATE1_LANG, $template1);
 		saveOption(OB_OPTION_TEMPLATE1_NAME, $template1);
@@ -104,9 +109,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		saveOption(OB_OPTION_SHOWERRORS_NAME, $showerrors);
 		saveOption(OB_OPTION_SAVETEMPLATES_NAME, $savetemplates);
 
-		echo '<strong><em>' . OB_OPTIONS_CONFIRM_SAVED_LANG . '</strong></em>';
+		echo '<strong><em>' . esc_html( OB_OPTIONS_CONFIRM_SAVED_LANG ) . '</em></strong>';
 	}
-	else if($_REQUEST['action'] == 'reset') {
+	else if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'reset') {
 
 		openbook_utilities_deleteOptions();
 		openbook_utilities_setDefaultOptions();
@@ -126,14 +131,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$showerrors = get_option(OB_OPTION_SHOWERRORS_NAME);
 		$savetemplates = get_option(OB_OPTION_SAVETEMPLATES_NAME);
 
-		echo '<strong><em>' . OB_OPTIONS_CONFIRM_RESET_LANG  . '</strong></em>';
+		echo '<strong><em>' . esc_html( OB_OPTIONS_CONFIRM_RESET_LANG ) . '</em></strong>';
 	}
 }
 
 function validateRequired($option_name, $option_value) {
 	$option_value = trim($option_value);
 	$message = $option_name . OB_VALUEREQUIRED_LANG;
-	if ($option_value == '') wp_die($message);
+	if ($option_value == '') wp_die( esc_html( $message ) );
 }
 
 //update or insert
@@ -148,7 +153,7 @@ function saveOption($option_name, $option_value) {
     		$deprecated='';
     		$autoload='no';
 			delete_option($option_name); //handles case where option exists with a blank value - fails get_option test in this function
-    		add_option($option_name, $option_value, $deprecated, $autoload);
+    		add_option($option_name, $option_value, '', $autoload);
   	}
 }
 
@@ -157,115 +162,119 @@ function saveOption($option_name, $option_value) {
 <h2>OpenBook</h2>
 
 <form method="post" action="">
+<?php wp_nonce_field( 'openbook_options_update', 'openbook_nonce' ); ?>
 
-<h3><?php echo OB_OPTIONS_TEMPLATETEMPLATES_LANG; ?></h3>
-<p><?php echo OB_OPTIONS_TEMPLATETEMPLATES_DETAIL_LANG; ?></p>
+<h3><?php echo esc_html( OB_OPTIONS_TEMPLATETEMPLATES_LANG ); ?></h3>
+<p><?php echo esc_html( OB_OPTIONS_TEMPLATETEMPLATES_DETAIL_LANG ); ?></p>
 
 <table class="form-table">
 
 <tr valign="top">
-<td width="12%"><?php echo OB_OPTION_TEMPLATE1_LANG ?></td>
-<td><textarea cols="80" rows="8" name="<?php echo OB_OPTION_TEMPLATE1_NAME ?>" ><?php echo $template1; ?></textarea></td>
+<td width="12%"><?php echo esc_html( OB_OPTION_TEMPLATE1_LANG ); ?></td>
+<td><textarea cols="80" rows="8" name="<?php echo esc_attr( OB_OPTION_TEMPLATE1_NAME ); ?>" ><?php echo esc_textarea( $template1 ); ?></textarea></td>
 <td></td>
 </tr>
 
 <tr valign="top">
-<td><?php echo OB_OPTION_TEMPLATE2_LANG ?></td>
-<td><textarea cols="80" rows="8" name="<?php echo OB_OPTION_TEMPLATE2_NAME ?>" ><?php echo $template2; ?></textarea></td>
+<td><?php echo esc_html( OB_OPTION_TEMPLATE2_LANG ); ?></td>
+<td><textarea cols="80" rows="8" name="<?php echo esc_attr( OB_OPTION_TEMPLATE2_NAME ); ?>" ><?php echo esc_textarea( $template2 ); ?></textarea></td>
 <td></td>
 </tr>
 
 <tr valign="top">
-<td><?php echo OB_OPTION_TEMPLATE3_LANG ?></td>
-<td><textarea cols="80" rows="8" name="<?php echo OB_OPTION_TEMPLATE3_NAME ?>" ><?php echo $template3; ?></textarea></td>
+<td><?php echo esc_html( OB_OPTION_TEMPLATE3_LANG ); ?></td>
+<td><textarea cols="80" rows="8" name="<?php echo esc_attr( OB_OPTION_TEMPLATE3_NAME ); ?>" ><?php echo esc_textarea( $template3 ); ?></textarea></td>
 <td></td>
 </tr>
 
 <tr valign="top">
-<td><?php echo OB_OPTION_TEMPLATE4_LANG ?></td>
-<td><textarea cols="80" rows="8" name="<?php echo OB_OPTION_TEMPLATE4_NAME ?>" ><?php echo $template4; ?></textarea></td>
+<td><?php echo esc_html( OB_OPTION_TEMPLATE4_LANG ); ?></td>
+<td><textarea cols="80" rows="8" name="<?php echo esc_attr( OB_OPTION_TEMPLATE4_NAME ); ?>" ><?php echo esc_textarea( $template4 ); ?></textarea></td>
 <td></td>
 </tr>
 
 <tr valign="top">
-<td><?php echo OB_OPTION_TEMPLATE5_LANG ?></td>
-<td><textarea cols="80" rows="8" name="<?php echo OB_OPTION_TEMPLATE5_NAME ?>" ><?php echo $template5; ?></textarea></td>
+<td><?php echo esc_html( OB_OPTION_TEMPLATE5_LANG ); ?></td>
+<td><textarea cols="80" rows="8" name="<?php echo esc_attr( OB_OPTION_TEMPLATE5_NAME ); ?>" ><?php echo esc_textarea( $template5 ); ?></textarea></td>
 <td></td>
 </tr>
 
 </table>
 
-<h3><?php echo OB_OPTIONS_FINDINLIBRARY_LANG; ?></h3>
+<h3><?php echo esc_html( OB_OPTIONS_FINDINLIBRARY_LANG ); ?></h3>
 <table class="form-table">
 
 <tr valign="top">
-<td width="12%"><?php echo OB_OPTIONS_FINDINLIBRARY_OPENURLRESOLVER_LANG; ?></td>
-<td width="28%"><input type="text" name="<?php echo OB_OPTION_FINDINLIBRARY_OPENURLRESOLVER_NAME ?>" value="<?php echo $openurlresolver; ?>" size="50" /></td>
-<td><?php echo OB_OPTIONS_FINDINLIBRARY_OPENURLRESOLVER_DETAIL_LANG; ?> <a href="http://www.worldcat.org/registry/institutions">WorldCat Registry</a>.</td>
+<td width="12%"><?php echo esc_html( OB_OPTIONS_FINDINLIBRARY_OPENURLRESOLVER_LANG ); ?></td>
+<td width="28%"><input type="text" name="<?php echo esc_attr( OB_OPTION_FINDINLIBRARY_OPENURLRESOLVER_NAME ); ?>" value="<?php echo esc_attr( $openurlresolver ); ?>" size="50" /></td>
+<td><?php echo esc_html( OB_OPTIONS_FINDINLIBRARY_OPENURLRESOLVER_DETAIL_LANG ); ?> <a href="http://www.worldcat.org/registry/institutions">WorldCat Registry</a>.</td>
 </tr>
 
 <tr valign="top">
-<td><?php echo OB_OPTIONS_FINDINLIBRARY_PHRASE_LANG; ?></td>
-<td><input type="text" name="<?php echo OB_OPTION_FINDINLIBRARY_PHRASE_NAME; ?>" value="<?php echo $findinlibraryphrase; ?>" size="50" /></td>
-<td><?php echo OB_OPTIONS_FINDINLIBRARY_PHRASE_DETAIL_LANG; ?></td>
+<td><?php echo esc_html( OB_OPTIONS_FINDINLIBRARY_PHRASE_LANG ); ?></td>
+<td><input type="text" name="<?php echo esc_attr( OB_OPTION_FINDINLIBRARY_PHRASE_NAME ); ?>" value="<?php echo esc_attr( $findinlibraryphrase ); ?>" size="50" /></td>
+<td><?php echo esc_html( OB_OPTIONS_FINDINLIBRARY_PHRASE_DETAIL_LANG ); ?></td>
 </tr>
 
 <tr valign="top">
-<td><?php echo OB_OPTIONS_FINDINLIBRARY_IMAGESRC_LANG; ?></td>
-<td><input type="text" name="<?php echo OB_OPTION_FINDINLIBRARY_IMAGESRC_NAME; ?>" value="<?php echo $findinlibraryimagesrc; ?>" size="50" /></td>
-<td><?php echo OB_OPTIONS_FINDINLIBRARY_IMAGESRC_DETAIL_LANG; ?></td>
+<td><?php echo esc_html( OB_OPTIONS_FINDINLIBRARY_IMAGESRC_LANG ); ?></td>
+<td><input type="text" name="<?php echo esc_attr( OB_OPTION_FINDINLIBRARY_IMAGESRC_NAME ); ?>" value="<?php echo esc_attr( $findinlibraryimagesrc ); ?>" size="50" /></td>
+<td><?php echo esc_html( OB_OPTIONS_FINDINLIBRARY_IMAGESRC_DETAIL_LANG ); ?></td>
 </tr>
 
 </table>
 
-<h3><?php echo OB_OPTIONS_SYSTEM_LANG; ?></h3>
+<h3><?php echo esc_html( OB_OPTIONS_SYSTEM_LANG ); ?></h3>
 <table class="form-table">
 
 <tr valign="top">
-<td width="12%"><?php echo OB_OPTIONS_LIBRARY_DOMAIN_LANG; ?></td>
-<td width="28%"><input type="text" name="<?php echo OB_OPTION_LIBRARY_DOMAIN_NAME ?>" value="<?php echo $domain; ?>" size="50" /></td>
-<td><?php echo OB_OPTIONS_LIBRARY_DOMAIN_DETAIL_LANG; ?></td>
+<td width="12%"><?php echo esc_html( OB_OPTIONS_LIBRARY_DOMAIN_LANG ); ?></td>
+<td width="28%"><input type="text" name="<?php echo esc_attr( OB_OPTION_LIBRARY_DOMAIN_NAME ); ?>" value="<?php echo esc_attr( $domain ); ?>" size="50" /></td>
+<td><?php echo esc_html( OB_OPTIONS_LIBRARY_DOMAIN_DETAIL_LANG ); ?></td>
 </tr>
 
 <tr valign="top">
-<td><?php echo OB_OPTION_SYSTEM_PROXY_LANG; ?></td>
-<td><input type=text name="<?php echo OB_OPTION_PROXY_NAME ?>" value="<?php echo $proxy; ?>" size="50" /></td>
-<td><?php echo OB_OPTION_SYSTEM_PROXY_DETAIL_LANG; ?></td>
+<td><?php echo esc_html( OB_OPTION_SYSTEM_PROXY_LANG ); ?></td>
+<td><input type="text" name="<?php echo esc_attr( OB_OPTION_PROXY_NAME ); ?>" value="<?php echo esc_attr( $proxy ); ?>" size="50" /></td>
+<td><?php echo esc_html( OB_OPTION_SYSTEM_PROXY_DETAIL_LANG ); ?></td>
 </tr>
 
 <tr valign="top">
-<td><?php echo OB_OPTION_SYSTEM_PROXYPORT_LANG; ?></td>
-<td><input type=text name="<?php echo OB_OPTION_PROXYPORT_NAME ?>" value="<?php echo $proxyport; ?>" size="5" /></td>
-<td><?php echo OB_OPTION_SYSTEM_PROXYPORT_DETAIL_LANG; ?></td>
+<td><?php echo esc_html( OB_OPTION_SYSTEM_PROXYPORT_LANG ); ?></td>
+<td><input type="text" name="<?php echo esc_attr( OB_OPTION_PROXYPORT_NAME ); ?>" value="<?php echo esc_attr( $proxyport ); ?>" size="5" /></td>
+<td><?php echo esc_html( OB_OPTION_SYSTEM_PROXYPORT_DETAIL_LANG ); ?></td>
 </tr>
 
 <tr valign="top">
-<td><?php echo OB_OPTION_SYSTEM_TIMEOUT_LANG; ?></td>
-<td><input type=text name="<?php echo OB_OPTION_TIMEOUT_NAME ?>" value="<?php echo $timeout; ?>" size="5" /></td>
-<td><?php echo OB_OPTION_SYSTEM_TIMEOUT_DETAIL_LANG; ?></td>
+<td><?php echo esc_html( OB_OPTION_SYSTEM_TIMEOUT_LANG ); ?></td>
+<td><input type="text" name="<?php echo esc_attr( OB_OPTION_TIMEOUT_NAME ); ?>" value="<?php echo esc_attr( $timeout ); ?>" size="5" /></td>
+<td><?php echo esc_html( OB_OPTION_SYSTEM_TIMEOUT_DETAIL_LANG ); ?></td>
 </tr>
 
 <tr valign="top">
-<td><?php echo OB_OPTIONS_SHOWERRORS_LANG; ?></td>
-<td><input type="checkbox" name="<?php echo OB_OPTION_SHOWERRORS_NAME; ?>" <?php echo ' ' . $showerrors . ' '; ?> /> </td>
-<td><?php echo OB_OPTIONS_SHOWERRORS_DETAIL_LANG; ?></td>
+<td><?php echo esc_html( OB_OPTIONS_SHOWERRORS_LANG ); ?></td>
+<td><input type="checkbox" name="<?php echo esc_attr( OB_OPTION_SHOWERRORS_NAME ); ?>" <?php echo ' ' . esc_attr( $showerrors ) . ' '; ?> /> </td>
+<td><?php echo esc_html( OB_OPTIONS_SHOWERRORS_DETAIL_LANG ); ?></td>
 </tr>
 
 <tr valign="top">
-<td><?php echo OB_OPTIONS_SAVETEMPLATES_LANG; ?></td>
-<td><input type="checkbox" name="<?php echo OB_OPTION_SAVETEMPLATES_NAME; ?>" <?php echo ' ' . $savetemplates . ' '; ?> /> </td>
-<td><?php echo OB_OPTIONS_SAVETEMPLATES_DETAIL_LANG; ?></td>
+<td><?php echo esc_html( OB_OPTIONS_SAVETEMPLATES_LANG ); ?></td>
+<td><input type="checkbox" name="<?php echo esc_attr( OB_OPTION_SAVETEMPLATES_NAME ); ?>" <?php echo ' ' . esc_attr( $savetemplates ) . ' '; ?> /> </td>
+<td><?php echo esc_html( OB_OPTIONS_SAVETEMPLATES_DETAIL_LANG ); ?></td>
 </tr>
 
 </table>
 
 <p class="submit">
-<input name="save" type="submit" class="button-primary" value="<?php echo OB_OPTIONS_SAVECHANGES_LANG ?>" />
+<input name="save" type="submit" class="button-primary" value="<?php echo esc_attr( OB_OPTIONS_SAVECHANGES_LANG ); ?>" />
 <input type="hidden" name="action" value="save" />
+</p>
 </form>
 
 <form method="post">
-<input name="reset" type="submit" class="button-primary" value="<?php echo OB_OPTIONS_RESET_LANG ?>" />
+<?php wp_nonce_field( 'openbook_options_update', 'openbook_nonce' ); ?>
+<p class="submit">
+<input name="reset" type="submit" class="button-primary" value="<?php echo esc_attr( OB_OPTIONS_RESET_LANG ); ?>" />
 <input type="hidden" name="action" value="reset" />
 </p>
 </form>

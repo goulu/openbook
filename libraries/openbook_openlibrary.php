@@ -1,5 +1,10 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+
 //module contains logic specific to Open Library
 
 //if json_decode is missing (< PHP5.2) use local json library

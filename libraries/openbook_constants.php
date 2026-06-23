@@ -1,5 +1,10 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+
 //constants used in the constants file
 //note: include language file before this one - language constants used as defaults
 
