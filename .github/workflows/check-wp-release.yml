@@ -1,0 +1,40 @@
+name: Check for New WordPress Release
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Run daily at midnight
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  check-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Check WordPress version
+        id: check
+        run: python3 .github/scripts/check-wp-version.py
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: update WordPress compatibility to ${{ steps.check.outputs.wp_version }}"
+          title: "Update WordPress compatibility to ${{ steps.check.outputs.wp_version }}"
+          body: |
+            A new version of WordPress Core was detected.
+            This automated PR updates the `Tested up to` header in `readme.txt` to `${{ steps.check.outputs.wp_version }}`.
+            
+            Please review the compatibility tests running on this PR to ensure there are no issues.
+          branch: "update-wp-compatibility"
+          delete-branch: true
