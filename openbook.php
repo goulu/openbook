@@ -79,7 +79,7 @@ function ob_deactivation() {
 
 // action function for admin hooks
 function openbook_add_pages() {
-	add_options_page('OpenBook', 'OpenBook', 8, 'openbook_options.php', 'openbook_options_page'); // add a new submenu under Options:
+	add_options_page('OpenBook', 'OpenBook', 'manage_options', 'openbook_options.php', 'openbook_options_page'); // add a new submenu under Options:
 }
 
 // displays the page content for the options submenu
