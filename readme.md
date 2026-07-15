@@ -5,7 +5,7 @@
 **Requires at least:** 6.3.0  
 **Requires PHP:** 7.0  
 **Tested up to:** 7.0  
-**Stable tag:** 3.7.0  
+**Stable tag:** 3.7.1  
 **License:** GPLv2 or later  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -61,15 +61,20 @@ By default, OpenBook will display a book cover image, title, author, and publish
 ## Screenshots
 
 1. Insert a book number, e.g., ISBN, using an OpenBook shortcode.
-   ![Screenshot 1](screenshot-1.png)
+   ![Screenshot 1](.wordpress-org/screenshot-1.png)
 2. Or use the OpenBook form to insert a book number and parameters. You can preview the display.
-   ![Screenshot 2](screenshot-2.png)
+   ![Screenshot 2](.wordpress-org/screenshot-2.png)
 3. OpenBook displays book data from Open Library.
-   ![Screenshot 3](screenshot-3.png)
+   ![Screenshot 3](.wordpress-org/screenshot-3.png)
 4. Customize the display using OpenBook's templates.
-   ![Screenshot 4](screenshot-4.png)
+   ![Screenshot 4](.wordpress-org/screenshot-4.png)
 
 ## Changelog
+
+### 3.7.1
+* Fixed GitHub Actions deployment workflow configuration.
+* Moved screenshot files to .wordpress-org folder and updated readme.md paths.
+* Updated Plugin URI in openbook.php.
 
 ### 3.7.0
 * Restored the TinyMCE visual editor button and Thickbox modal layout.
@@ -91,6 +96,9 @@ By default, OpenBook will display a book cover image, title, author, and publish
 * HTML is the default option
 
 ## Upgrade Notice
+
+### 3.7.1
+Minor update fixing deployment workflow and asset paths for WordPress.org SVN repository.
 
 ### 3.7.0
 This update restores the editor button functionality on modern WordPress versions, resolves asset path loading conflicts, and declares PHP 7.0+ requirements.

@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: OpenBook
-Plugin URI: https://github.com/goulu/openbook
+Plugin URI: https://wordpress.org/plugins/openbook-book-data
 Description: Displays a book's cover image, title, author, links, and other book data from Open Library.
-Version: 3.7.0
+Version: 3.7.1
 Requires at least: 6.3.0
 Requires PHP: 7.0
 Author: John Miedema and Philippe Guglielmetti 
