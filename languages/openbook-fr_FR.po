@@ -1,0 +1,298 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenBook 3.7.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-16 11:12+0200\n"
+"PO-Revision-Date: 2026-07-16 11:12+0200\n"
+"Last-Translator: Philippe Guglielmetti\n"
+"Language-Team: French\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "Settings"
+msgstr "Réglages"
+
+msgid "A Book Number is required"
+msgstr "Un numéro de livre est requis"
+
+msgid "Revision must be blank or a number"
+msgstr "La révision doit être vide ou un nombre"
+
+msgid "... please wait ..."
+msgstr "... veuillez patienter ..."
+
+msgid "Book Number"
+msgstr "Numéro de livre"
+
+msgid "Select type (usually ISBN) and enter number. You can look the number up at %1$sOpen Library%2$s. If the book is not there, %3$sadd it%4$s."
+msgstr "Sélectionnez le type (généralement ISBN) et saisissez le numéro. Vous pouvez chercher le numéro sur %1$sOpen Library%2$s. Si le livre n'y est pas, %3$sajoutez-le%4$s."
+
+msgid "ISBN (10 or 13 digits)"
+msgstr "ISBN (10 ou 13 chiffres)"
+
+msgid "LCCN"
+msgstr "LCCN"
+
+msgid "OCLC"
+msgstr "OCLC"
+
+msgid "Open Library Key (OLXXXXXXXXX)"
+msgstr "Clé Open Library (OLXXXXXXXXX)"
+
+msgid "Revision Number"
+msgstr "Numéro de révision"
+
+msgid "If the Book Number type is Open Library Key, you can specify a revision number, else the most recent version is used."
+msgstr "Si le type de numéro de livre est Clé Open Library, vous pouvez spécifier un numéro de révision, sinon la version la plus récente est utilisée."
+
+msgid "Template Number"
+msgstr "Numéro de modèle"
+
+msgid "Select an OpenBook template number. Matches the template on the %1$sOpenBook Settings%2$s page."
+msgstr "Sélectionnez un numéro de modèle OpenBook. Correspond au modèle sur la page de %1$sRéglages OpenBook%2$s."
+
+msgid "Publisher URL"
+msgstr "URL de l'éditeur"
+
+msgid "Optional. If you enter a publisher URL it will be used in the OpenBook publisher display element."
+msgstr "Optionnel. Si vous saisissez une URL d'éditeur, elle sera utilisée dans l'élément d'affichage de l'éditeur OpenBook."
+
+msgid "HTML (recommended) or Shortcode"
+msgstr "HTML (recommandé) ou Code court"
+
+msgid "HTML is longer but loads faster for your readers. Shortcode is shorter but makes a live call to Open Library."
+msgstr "L'HTML est plus long mais se charge plus rapidement pour vos lecteurs. Le Code court est plus court mais effectue un appel en direct à Open Library."
+
+msgid "Preview"
+msgstr "Prévisualiser"
+
+msgid "Reset"
+msgstr "Réinitialiser"
+
+msgid "<< Back"
+msgstr "<< Retour"
+
+msgid "Insert"
+msgstr "Insérer"
+
+msgid "OpenBook uses the PHP cURL library. Ask your system administrator to enable this package."
+msgstr "OpenBook utilise la bibliothèque PHP cURL. Demandez à votre administrateur système d'activer ce paquet."
+
+msgid "OpenBook requires at least a book number, e.g., ISBN or Open Library key"
+msgstr "OpenBook nécessite au moins un numéro de livre, ex. : ISBN ou clé Open Library"
+
+msgid "Invalid template or template number. Correct the template, or enter a template number of 1-5. If this does not work, click 'Reset to installation values' in Settings."
+msgstr "Modèle ou numéro de modèle invalide. Corrigez le modèle ou entrez un numéro de modèle de 1 à 5. Si cela ne fonctionne pas, cliquez sur « Réinitialiser aux valeurs d'installation » dans les Réglages."
+
+msgid "%s is a required value. Please return to the OpenBook settings and enter a value."
+msgstr "%s est une valeur requise. Veuillez retourner aux réglages d'OpenBook et saisir une valeur."
+
+msgid "Open Library Data Unavailable"
+msgstr "Données d'Open Library indisponibles"
+
+msgid "Open Library Data Unavailable (books)"
+msgstr "Données d'Open Library indisponibles (livres)"
+
+msgid "Open Library Data Unavailable (authors)"
+msgstr "Données d'Open Library indisponibles (auteurs)"
+
+msgid "No Book Data for this Book Number"
+msgstr "Aucune donnée de livre pour ce numéro"
+
+msgid "Invalid domain. The usual value is http://openlibrary.org."
+msgstr "Domaine invalide. La valeur habituelle est http://openlibrary.org."
+
+msgid "Invalid cover server. The usual value is http://covers.openlibrary.org."
+msgstr "Serveur de couverture invalide. La valeur habituelle est http://covers.openlibrary.org."
+
+msgid "Timeout contacting Open Library"
+msgstr "Délai d'attente dépassé lors de la connexion à Open Library"
+
+msgid "Error contacting Open Library"
+msgstr "Erreur lors de la connexion à Open Library"
+
+msgid "Open Library Server Error"
+msgstr "Erreur de serveur Open Library"
+
+msgid "Templates"
+msgstr "Modèles"
+
+msgid "Modify these templates to change the content and order of the OpenBook display elements. Template 1 is the default, but you can change the template number in the Visual Editor dropdown or in a shortcode, e.g., [openbook booknumber=\"123\" templatenumber=\"2\"]. Modify the template styles by editing the OpenBook stylesheet found in the plugin folder. For more information visit the "
+msgstr "Modifiez ces modèles pour changer le contenu et l'ordre des éléments d'affichage d'OpenBook. Le modèle 1 est celui par défaut, mais vous pouvez changer le numéro de modèle dans le menu déroulant de l'éditeur visuel ou dans un code court, ex. : [openbook booknumber=\"123\" templatenumber=\"2\"]. Modifiez les styles de modèle en éditant la feuille de style OpenBook située dans le dossier du plugin. Pour plus d'informations, visitez le "
+
+msgid "Template 1 (default)"
+msgstr "Modèle 1 (par défaut)"
+
+msgid "Template 2 (e.g., smaller cover for widgets)"
+msgstr "Modèle 2 (ex. : couverture plus petite pour les widgets)"
+
+msgid "Template 3 (e.g., large cover)"
+msgstr "Modèle 3 (ex. : grande couverture)"
+
+msgid "Template 4 (e.g., inline text link)"
+msgstr "Modèle 4 (ex. : lien texte en ligne)"
+
+msgid "Template 5 (e.g., academic reference)"
+msgstr "Modèle 5 (ex. : référence académique)"
+
+msgid "Find in the Library"
+msgstr "Trouver en bibliothèque"
+
+msgid "OpenURL Resolver"
+msgstr "Résolveur OpenURL"
+
+msgid "If you enter a library's OpenURL resolver (version 1.0) here, and add [OB_LINK_FINDINLIBRARY] or [OB_IMAGE_FINDINLIBRARY] to a template, a link will point to that library's records. To find the resolver, ask the Systems Librarian or look it up in the %1$sWorldCat Registry%2$s."
+msgstr "Si vous saisissez ici le résolveur OpenURL (version 1.0) d'une bibliothèque et ajoutez [OB_LINK_FINDINLIBRARY] ou [OB_IMAGE_FINDINLIBRARY] à un modèle, un lien pointera vers les notices de cette bibliothèque. Pour trouver le résolveur, demandez au bibliothécaire système ou cherchez-le dans le %1$sWorldCat Registry%2$s."
+
+msgid "Phrase"
+msgstr "Phrase"
+
+msgid "If you enter an OpenURL resolver, and add [OB_LINK_FINDINLIBRARY] to a template, this phrase is used for the text link. You may wish to name your library."
+msgstr "Si vous saisissez un résolveur OpenURL et ajoutez [OB_LINK_FINDINLIBRARY] à un modèle, cette phrase sera utilisée pour le lien texte. Vous pouvez y inclure le nom de votre bibliothèque."
+
+msgid "Image Source"
+msgstr "Source de l'image"
+
+msgid "If you enter an OpenURL resolver, and add [OB_IMAGE_FINDINLIBRARY] to a template, this image URL is used for the image link. You may wish to use your library's image."
+msgstr "Si vous saisissez un résolveur OpenURL et ajoutez [OB_IMAGE_FINDINLIBRARY] à un modèle, cette URL d'image sera utilisée pour le lien image. Vous pouvez utiliser l'image de votre bibliothèque."
+
+msgid "System"
+msgstr "Système"
+
+msgid "Library Domain"
+msgstr "Domaine de la bibliothèque"
+
+msgid "Cover Server"
+msgstr "Serveur de couverture"
+
+msgid "Timeout (sec)"
+msgstr "Délai d'attente (sec)"
+
+msgid "Proxy"
+msgstr "Proxy"
+
+msgid "Proxy Port"
+msgstr "Port du proxy"
+
+msgid "Use the default value for Open Library or enter the domain of your local installation"
+msgstr "Utilisez la valeur par défaut pour Open Library ou saisissez le domaine de votre installation locale"
+
+msgid "The timeout for connecting with Open Library. Increase to wait longer. Decrease if page loads are hanging."
+msgstr "Le délai de connexion à Open Library. Augmentez-le pour attendre plus longtemps. Diminuez-le si le chargement des pages se bloque."
+
+msgid "May be needed if you are behind a firewall. Ask your system administrator for this value and the port."
+msgstr "Peut être nécessaire si vous êtes derrière un pare-feu. Demandez cette valeur et le port à votre administrateur système."
+
+msgid "Goes with the proxy. Just enter the number, no colon."
+msgstr "Va avec le proxy. Entrez simplement le nombre, sans deux-points."
+
+msgid "Show Error Details"
+msgstr "Afficher les détails des erreurs"
+
+msgid "If checked, OpenBook displays detailed information if an error occurs. Useful for diagnosing problems."
+msgstr "Si coché, OpenBook affiche des informations détaillées lorsqu'une erreur survient. Utile pour diagnostiquer les problèmes."
+
+msgid "Save Settings"
+msgstr "Enregistrer les réglages"
+
+msgid "If checked, OpenBook will save your settings when the plugin is deactivated, otherwise it will delete them."
+msgstr "Si coché, OpenBook enregistrera vos réglages lors de la désactivation du plugin, sinon il les supprimera."
+
+msgid "Save Changes"
+msgstr "Enregistrer les modifications"
+
+msgid "Reset to Installation Values"
+msgstr "Réinitialiser aux valeurs d'installation"
+
+msgid "Your changes have been saved"
+msgstr "Vos modifications ont été enregistrées"
+
+msgid "The options have been reset to the original installation values"
+msgstr "Les options ont été réinitialisées aux valeurs d'installation d'origine"
+
+msgid "First Sentence: "
+msgstr "Première phrase : "
+
+msgid "Description: "
+msgstr "Description : "
+
+msgid "Notes: "
+msgstr "Notes : "
+
+msgid "View this title in Open Library"
+msgstr "Voir ce titre sur Open Library"
+
+msgid "View this author in Open Library"
+msgstr "Voir cet auteur sur Open Library"
+
+msgid "View the publisher's website"
+msgstr "Visiter le site de l'éditeur"
+
+msgid "Find this title in a library using WorldCat"
+msgstr "Trouver ce titre en bibliothèque via WorldCat"
+
+msgid "Find this title in the library"
+msgstr "Trouver ce titre en bibliothèque"
+
+msgid "Read Online"
+msgstr "Lire en ligne"
+
+msgid "Read this work online"
+msgstr "Lire cette œuvre en ligne"
+
+msgid "Amazon"
+msgstr "Amazon"
+
+msgid "View this title at Amazon"
+msgstr "Voir ce titre sur Amazon"
+
+msgid "Goodreads"
+msgstr "Goodreads"
+
+msgid "View this title at Goodreads"
+msgstr "Voir ce titre sur Goodreads"
+
+msgid "Google Books"
+msgstr "Google Livres"
+
+msgid "View this title at Google Books"
+msgstr "Voir ce titre sur Google Livres"
+
+msgid "Library of Congress"
+msgstr "Library of Congress"
+
+msgid "View this title at The Library of Congress"
+msgstr "Voir ce titre à la Bibliothèque du Congrès"
+
+msgid "LibraryThing"
+msgstr "LibraryThing"
+
+msgid "View this title at LibraryThing"
+msgstr "Voir ce titre sur LibraryThing"
+
+msgid "WorldCat"
+msgstr "WorldCat"
+
+msgid "View this title at WorldCat"
+msgstr "Voir ce titre sur WorldCat"
+
+msgid "Project Gutenberg"
+msgstr "Projet Gutenberg"
+
+msgid "View this title at Project Gutenberg"
+msgstr "Voir ce titre sur le Projet Gutenberg"
+
+msgid "BookFinder"
+msgstr "BookFinder"
+
+msgid "Search for the best price at BookFinder"
+msgstr "Rechercher le meilleur prix sur BookFinder"
+
+msgid "HTTP request error - %1$s - %2$s"
+msgstr "Erreur de requête HTTP - %1$s - %2$s"
+
+msgid "HTTP request error - Status Code: %1$s - %2$s"
+msgstr "Erreur de requête HTTP - Code d'état : %1$s - %2$s"
