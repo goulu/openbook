@@ -1,16 +1,20 @@
 //this file defines the HTML form and handles the form submit for the OpenBook visual editor button
 
+function openbook_t(key, defaultVal) {
+	return (typeof openbook_translations !== 'undefined' && openbook_translations[key]) ? openbook_translations[key] : defaultVal;
+}
+
 function openbook_button_validations(booknumber, templatenumber, publisherurl, revisionnumber) {
 
 	if (booknumber == "") {
-		alert("A Book Number is required");
+		alert(openbook_t('book_number_required', "A Book Number is required"));
 		document.getElementById('openbook-booknumber').focus();
 		return false;
 	}
 
 	if (revisionnumber != "") {			
 		if (isNaN(revisionnumber)) {
-			alert("Revision must be blank or a number");
+			alert(openbook_t('revision_must_be_number', "Revision must be blank or a number"));
 			document.getElementById('openbook-revisionnumber').focus();
 			return false;
 		}
@@ -32,7 +36,7 @@ function openbook_button_preview(booknumber, templatenumber, publisherurl, revis
 
 	document.getElementById('openbook-request').style.display = "none";
 	document.getElementById('openbook-request').style.visibility = "hidden";
-	document.getElementById('openbook-response').innerHTML = "... please wait ...";
+	document.getElementById('openbook-response').innerHTML = openbook_t('please_wait', "... please wait ...");
 
 	//ajaxurl is always defined in the admin header and points to admin-ajax.php
 	jQuery.ajax({
@@ -83,25 +87,30 @@ function openbook_reset() {
 	
 	// executes this when the DOM is ready
 	jQuery(function(){
+		// helper function to escape text safely
+		var esc = function(str) {
+			return jQuery('<div/>').text(str).html();
+		};
+
 		// creates a form to be displayed everytime the button is clicked
-		var form = jQuery('<div id="openbook-form">\
+		var form_html = '<div id="openbook-form">\
 			<div id="openbook-request">\
 			<table id="openbook-table" class="form-table">\
-			<tr><td width="60%">Book Number<br /><small>Select type (usually ISBN) and enter number. You can look the number up at <a href="http://openlibrary.org/" target="_blank">Open Library</a>. If the book is not there, <a href="http://openlibrary.org/books/add" target="_blank">add it</a>.</small></td>\
+			<tr><td width="60%">' + esc(openbook_t('book_number', 'Book Number')) + '<br /><small>' + openbook_t('book_number_desc', 'Select type (usually ISBN) and enter number. You can look the number up at <a href="http://openlibrary.org/" target="_blank">Open Library</a>. If the book is not there, <a href="http://openlibrary.org/books/add" target="_blank">add it</a>.') + '</small></td>\
 				<td width="40%"><select name="openbook-booknumbertype" id="openbook-booknumbertype">\
-					<option value="ISBN">ISBN (10 or 13 digits)</option>\
-					<option value="LCCN">LCCN</option>\
-					<option value="OCLC">OCLC</option>\
-					<option value="OLID">Open Library Key (OLXXXXXXXXX)</option>\
+					<option value="ISBN">' + esc(openbook_t('isbn', 'ISBN (10 or 13 digits)')) + '</option>\
+					<option value="LCCN">' + esc(openbook_t('lccn', 'LCCN')) + '</option>\
+					<option value="OCLC">' + esc(openbook_t('oclc', 'OCLC')) + '</option>\
+					<option value="OLID">' + esc(openbook_t('olid', 'Open Library Key (OLXXXXXXXXX)')) + '</option>\
 					</select>\
 					<input type="text" name="openbook-booknumber" id="openbook-booknumber" value="" />\
 				</td>\
 			</tr>\
-			<tr><td>Revision Number<br><small>If the Book Number type is Open Library Key, you can specify a revision number, else the most recent version is used.</small></td>\
+			<tr><td>' + esc(openbook_t('revision_number', 'Revision Number')) + '<br><small>' + esc(openbook_t('revision_number_desc', 'If the Book Number type is Open Library Key, you can specify a revision number, else the most recent version is used.')) + '</small></td>\
 				<td><input type="text" name="openbook-revisionnumber" id="openbook-revisionnumber" value="" disabled="true" />\
 				</td>\
 			</tr>\
-			<tr><td>Template Number<br /><small>Select an OpenBook template number. Matches the template on the <a href="../wp-admin/options-general.php?page=openbook_options.php" target="_blank">OpenBook Settings</a> page.</small></td>\
+			<tr><td>' + esc(openbook_t('template_number', 'Template Number')) + '<br /><small>' + openbook_t('template_number_desc', 'Select an OpenBook template number. Matches the template on the <a href="../wp-admin/options-general.php?page=openbook_options.php" target="_blank">OpenBook Settings</a> page.') + '</small></td>\
 				<td><select name="openbook-templatenumber" id="openbook-templatenumber">\
 					<option value="1">1</option>\
 					<option value="2">2</option>\
@@ -111,24 +120,25 @@ function openbook_reset() {
 					</select>\
 				</td>\
 			</tr>\
-			<tr><td>Publisher URL<br><small>Optional. If you enter a publisher URL it will be used in the OpenBook publisher display element.</small></td>\
+			<tr><td>' + esc(openbook_t('publisher_url', 'Publisher URL')) + '<br><small>' + esc(openbook_t('publisher_url_desc', 'Optional. If you enter a publisher URL it will be used in the OpenBook publisher display element.')) + '</small></td>\
 				<td><input type="text" name="openbook-publisherurl" id="openbook-publisherurl" value="" />\
 				</td>\
 			</tr>\
-			<tr><td>HTML (recommended) or Shortcode<br /><small>HTML is longer but loads faster for your readers. Shortcode is shorter but makes a live call to Open Library.</small></td>\
+			<tr><td>' + esc(openbook_t('html_or_shortcode', 'HTML (recommended) or Shortcode')) + '<br /><small>' + esc(openbook_t('html_or_shortcode_desc', 'HTML is longer but loads faster for your readers. Shortcode is shorter but makes a live call to Open Library.')) + '</small></td>\
 				<td><input type="radio" name="openbook-shortcode" id="openbook-html" value="html" checked />HTML\
 				<input type="radio" name="openbook-shortcode" id="openbook-shortcode" value="shortcode" />Shortcode\
 				</td>\
 			</tr>\
 			</table>\
-			<p class="submit"><input type="button" id="openbook-preview" value="Preview" name="openbook-preview" /> <input type="button" id="openbook-reset" value="Reset" name="openbook-reset" /></p>\
+			<p class="submit"><input type="button" id="openbook-preview" value="' + esc(openbook_t('preview', 'Preview')) + '" name="openbook-preview" /> <input type="button" id="openbook-reset" value="' + esc(openbook_t('reset', 'Reset')) + '" name="openbook-reset" /></p>\
 			</div>\
 			<div id="openbook-response-div" style="display:none;visibility:hidden;">\
-			<p class="submit"><input type="button" id="openbook-back" value="<< Back" name="openbook-back" /> <input type="button" id="openbook-insert" value="Insert" name="openbook-insert" /></span></p>\
+			<p class="submit"><input type="button" id="openbook-back" value="' + esc(openbook_t('back', '<< Back')) + '" name="openbook-back" /> <input type="button" id="openbook-insert" value="' + esc(openbook_t('insert', 'Insert')) + '" name="openbook-insert" /></span></p>\
 			<span id="openbook-response"></span>\
 			</div>\
-			</div>');
-		
+			</div>';
+
+		var form = jQuery(form_html);
 		var table = form.find('table');
 		form.appendTo('body').hide();
 

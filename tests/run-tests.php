@@ -55,6 +55,7 @@ function add_filter( $hook, $function, $priority = 10, $accepted_args = 1 ) {
 
 function add_shortcode( $tag, $function ) {}
 function plugin_basename( $file ) { return basename( $file ); }
+function get_locale() { return 'en_US'; }
 
 // 1. Include openbook.php (simulates plugin loading)
 require_once dirname( __FILE__ ) . '/../openbook.php';

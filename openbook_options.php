@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 function openbook_options_validate_required($option_name, $option_value) {
 	$option_value = trim($option_value);
-	$message = $option_name . OB_VALUEREQUIRED_LANG;
+	$message = sprintf( OB_VALUEREQUIRED_LANG, $option_name );
 	if ($option_value == '') {
 		wp_die( esc_html( $message ) );
 	}
@@ -204,7 +204,7 @@ function openbook_render_options_page() {
 	<tr valign="top">
 	<td width="12%"><?php echo esc_html( OB_OPTIONS_FINDINLIBRARY_OPENURLRESOLVER_LANG ); ?></td>
 	<td width="28%"><input type="text" name="<?php echo esc_attr( OB_OPTION_FINDINLIBRARY_OPENURLRESOLVER_NAME ); ?>" value="<?php echo esc_attr( $openurlresolver ); ?>" size="50" /></td>
-	<td><?php echo esc_html( OB_OPTIONS_FINDINLIBRARY_OPENURLRESOLVER_DETAIL_LANG ); ?> <a href="http://www.worldcat.org/registry/institutions">WorldCat Registry</a>.</td>
+	<td><?php printf( esc_html( OB_OPTIONS_FINDINLIBRARY_OPENURLRESOLVER_DETAIL_LANG ), '<a href="http://www.worldcat.org/registry/institutions" target="_blank">', '</a>' ); ?></td>
 	</tr>
 
 	<tr valign="top">

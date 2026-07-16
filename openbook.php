@@ -11,6 +11,7 @@ Author URI: https://profiles.wordpress.org/goulu/
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: openbook
+Domain Path: /languages
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -59,11 +60,34 @@ function openbook_init_translations_and_constants() {
 	include_once('libraries/openbook_constants.php');
 }
 
-//outputs AJAX nonce for the visual editor button
+//outputs AJAX nonce and translation strings for the visual editor button
 function openbook_admin_js_variables() {
 	?>
 	<script type="text/javascript">
 		var openbook_ajax_nonce = <?php echo wp_json_encode( wp_create_nonce( 'openbook_ajax_action' ) ); ?>;
+		var openbook_translations = {
+			'book_number_required': <?php echo wp_json_encode( __( 'A Book Number is required', 'openbook' ) ); ?>,
+			'revision_must_be_number': <?php echo wp_json_encode( __( 'Revision must be blank or a number', 'openbook' ) ); ?>,
+			'please_wait': <?php echo wp_json_encode( __( '... please wait ...', 'openbook' ) ); ?>,
+			'book_number': <?php echo wp_json_encode( __( 'Book Number', 'openbook' ) ); ?>,
+			'book_number_desc': <?php echo wp_json_encode( sprintf( __( 'Select type (usually ISBN) and enter number. You can look the number up at %1$sOpen Library%2$s. If the book is not there, %3$sadd it%4$s.', 'openbook' ), '<a href="http://openlibrary.org/" target="_blank">', '</a>', '<a href="http://openlibrary.org/books/add" target="_blank">', '</a>' ) ); ?>,
+			'isbn': <?php echo wp_json_encode( __( 'ISBN (10 or 13 digits)', 'openbook' ) ); ?>,
+			'lccn': <?php echo wp_json_encode( __( 'LCCN', 'openbook' ) ); ?>,
+			'oclc': <?php echo wp_json_encode( __( 'OCLC', 'openbook' ) ); ?>,
+			'olid': <?php echo wp_json_encode( __( 'Open Library Key (OLXXXXXXXXX)', 'openbook' ) ); ?>,
+			'revision_number': <?php echo wp_json_encode( __( 'Revision Number', 'openbook' ) ); ?>,
+			'revision_number_desc': <?php echo wp_json_encode( __( 'If the Book Number type is Open Library Key, you can specify a revision number, else the most recent version is used.', 'openbook' ) ); ?>,
+			'template_number': <?php echo wp_json_encode( __( 'Template Number', 'openbook' ) ); ?>,
+			'template_number_desc': <?php echo wp_json_encode( sprintf( __( 'Select an OpenBook template number. Matches the template on the %1$sOpenBook Settings%2$s page.', 'openbook' ), '<a href="../wp-admin/options-general.php?page=openbook_options.php" target="_blank">', '</a>' ) ); ?>,
+			'publisher_url': <?php echo wp_json_encode( __( 'Publisher URL', 'openbook' ) ); ?>,
+			'publisher_url_desc': <?php echo wp_json_encode( __( 'Optional. If you enter a publisher URL it will be used in the OpenBook publisher display element.', 'openbook' ) ); ?>,
+			'html_or_shortcode': <?php echo wp_json_encode( __( 'HTML (recommended) or Shortcode', 'openbook' ) ); ?>,
+			'html_or_shortcode_desc': <?php echo wp_json_encode( __( 'HTML is longer but loads faster for your readers. Shortcode is shorter but makes a live call to Open Library.', 'openbook' ) ); ?>,
+			'preview': <?php echo wp_json_encode( __( 'Preview', 'openbook' ) ); ?>,
+			'reset': <?php echo wp_json_encode( __( 'Reset', 'openbook' ) ); ?>,
+			'back': <?php echo wp_json_encode( __( '<< Back', 'openbook' ) ); ?>,
+			'insert': <?php echo wp_json_encode( __( 'Insert', 'openbook' ) ); ?>
+		};
 	</script>
 	<?php
 }
@@ -182,12 +206,20 @@ function openbook_insertbookdata($atts, $content = null) {
 		$OL_TITLE_PREFIX = ''; // Initialize to empty string (not available from API)
 
 		$authors = openbook_openlibrary_getProperty($bookdataresult, 'authors');
+		if ( is_array( $authors ) ) {
+			foreach ( $authors as $key => $author ) {
+				if ( isset( $author->name ) ) {
+					$authors[$key]->name = openbook_localize_author_name( $author->name );
+				}
+			}
+		}
 		$OL_AUTHORLIST = openbook_openlibrary_extractList($authors, 'name');
 		$OL_AUTHORURLLIST = openbook_openlibrary_extractList($authors, 'url');
 		$OL_AUTHORFIRST = openbook_openlibrary_extractFirstFromList($authors, 'name');
 		$OL_AUTHORURLFIRST = openbook_openlibrary_extractFirstFromList($authors, 'url');
 
 		$OL_BYSTATEMENT = openbook_openlibrary_extractValueExact($bookdataresult, 'by_statement');
+		$OL_BYSTATEMENT = openbook_localize_author_name( $OL_BYSTATEMENT );
 
 //$contributions - Missing at present, expecting soon from Open Library
 //		$contributions = $bookdataresult ->{'contributions'};

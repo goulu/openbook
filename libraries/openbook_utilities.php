@@ -68,7 +68,7 @@ function openbook_utilities_getUrlContents($url, $timeout, $proxy, $proxyport, $
 			throw new Exception( esc_html( OB_CURLTIMEOUT_LANG ) );
 		}
 		if ($showerrors == OB_HTML_CHECKED_TRUE) {
-			throw new Exception( esc_html( 'HTTP request error - ' . $error_message . ' - ' . $url ) );
+			throw new Exception( esc_html( sprintf( __( 'HTTP request error - %1$s - %2$s', 'openbook' ), $error_message, $url ) ) );
 		}
 		throw new Exception( esc_html( OB_CURLERROR_LANG ) );
 	}
@@ -82,7 +82,7 @@ function openbook_utilities_getUrlContents($url, $timeout, $proxy, $proxyport, $
 
 	if ( $status_code !== 200 ) {
 		if ($showerrors == OB_HTML_CHECKED_TRUE) {
-			throw new Exception( esc_html( 'HTTP request error - Status Code: ' . $status_code . ' - ' . $url ) );
+			throw new Exception( esc_html( sprintf( __( 'HTTP request error - Status Code: %1$s - %2$s', 'openbook' ), $status_code, $url ) ) );
 		}
 		throw new Exception( esc_html( $errmessage ) );
 	}
@@ -102,5 +102,28 @@ function openbook_utilities_validISBN($testisbn) {
 function openbook_utilities_getDomain()
 {
 	return wp_strip_all_tags( isset( $_SERVER["SERVER_NAME"] ) ? wp_unslash( $_SERVER["SERVER_NAME"] ) : '' );
+}
+
+function openbook_localize_author_name( $name ) {
+	if ( empty( $name ) ) {
+		return '';
+	}
+
+	if ( stripos( get_locale(), 'zh' ) !== 0 ) {
+		if ( function_exists( 'transliterator_transliterate' ) ) {
+			// Check if the name has non-Latin characters by converting it to Latin without stripping accents
+			$latin = transliterator_transliterate( 'Any-Latin; Title', $name );
+			if ( $latin !== false && trim( $latin ) !== trim( $name ) ) {
+				// Transliterate to ASCII to strip tones/accents from non-Latin scripts (e.g. Cíxīn -> Cixin)
+				$ascii = transliterator_transliterate( 'Latin-ASCII', $latin );
+				if ( $ascii !== false ) {
+					return trim( $ascii ) . ' (' . trim( $name ) . ')';
+				}
+				return trim( $latin ) . ' (' . trim( $name ) . ')';
+			}
+		}
+	}
+
+	return $name;
 }
 ?>

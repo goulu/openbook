@@ -13,7 +13,7 @@ define('OB_ENABLECURL_LANG', __('OpenBook uses the PHP cURL library. Ask your sy
 define('OB_BOOKNUMBERREQUIRED_LANG', __('OpenBook requires at least a book number, e.g., ISBN or Open Library key', 'openbook'));
 define('OB_INVALIDTEMPLATENUMBER_LANG', __('Invalid template or template number. Correct the template, or enter a template number of 1-5. If this does not work, click \'Reset to installation values\' in Settings.', 'openbook'));
 
-define('OB_VALUEREQUIRED_LANG', __(' is a required value. Please return to the OpenBook settings and enter a value.', 'openbook'));
+define('OB_VALUEREQUIRED_LANG', __('%s is a required value. Please return to the OpenBook settings and enter a value.', 'openbook'));
 
 define('OB_OPENLIBRARYDATAUNAVAILABLE_KEY_LANG', __('Open Library Data Unavailable', 'openbook')); //most common
 define('OB_OPENLIBRARYDATAUNAVAILABLE_BOOK_LANG', __('Open Library Data Unavailable (books)', 'openbook'));
@@ -41,7 +41,7 @@ define('OB_OPTION_TEMPLATE5_LANG', __('Template 5 (e.g., academic reference)', '
 define('OB_OPTIONS_FINDINLIBRARY_LANG', __('Find in the Library', 'openbook'));
 
 define('OB_OPTIONS_FINDINLIBRARY_OPENURLRESOLVER_LANG', __('OpenURL Resolver', 'openbook'));
-define('OB_OPTIONS_FINDINLIBRARY_OPENURLRESOLVER_DETAIL_LANG', __("If you enter a library's OpenURL resolver (version 1.0) here, and add [OB_LINK_FINDINLIBRARY] or [OB_IMAGE_FINDINLIBRARY] to a template, a link will point to that library's records. To find the resolver, ask the Systems Librarian or look it up in the ", 'openbook'));
+define('OB_OPTIONS_FINDINLIBRARY_OPENURLRESOLVER_DETAIL_LANG', __('If you enter a library\'s OpenURL resolver (version 1.0) here, and add [OB_LINK_FINDINLIBRARY] or [OB_IMAGE_FINDINLIBRARY] to a template, a link will point to that library\'s records. To find the resolver, ask the Systems Librarian or look it up in the %1$sWorldCat Registry%2$s.', 'openbook'));
 
 define('OB_OPTIONS_FINDINLIBRARY_PHRASE_LANG', __('Phrase', 'openbook'));
 define('OB_OPTIONS_FINDINLIBRARY_PHRASE_DETAIL_LANG', __('If you enter an OpenURL resolver, and add [OB_LINK_FINDINLIBRARY] to a template, this phrase is used for the text link. You may wish to name your library.', 'openbook'));
