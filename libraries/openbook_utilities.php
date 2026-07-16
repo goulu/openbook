@@ -68,6 +68,7 @@ function openbook_utilities_getUrlContents($url, $timeout, $proxy, $proxyport, $
 			throw new Exception( esc_html( OB_CURLTIMEOUT_LANG ) );
 		}
 		if ($showerrors == OB_HTML_CHECKED_TRUE) {
+			/* translators: 1: error message, 2: requested URL */
 			throw new Exception( esc_html( sprintf( __( 'HTTP request error - %1$s - %2$s', 'openbook' ), $error_message, $url ) ) );
 		}
 		throw new Exception( esc_html( OB_CURLERROR_LANG ) );
@@ -82,6 +83,7 @@ function openbook_utilities_getUrlContents($url, $timeout, $proxy, $proxyport, $
 
 	if ( $status_code !== 200 ) {
 		if ($showerrors == OB_HTML_CHECKED_TRUE) {
+			/* translators: 1: HTTP status code, 2: requested URL */
 			throw new Exception( esc_html( sprintf( __( 'HTTP request error - Status Code: %1$s - %2$s', 'openbook' ), $status_code, $url ) ) );
 		}
 		throw new Exception( esc_html( $errmessage ) );

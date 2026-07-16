@@ -5,7 +5,7 @@
 **Requires at least:** 6.3.0  
 **Requires PHP:** 7.0  
 **Tested up to:** 7.0  
-**Stable tag:** 3.7.1  
+**Stable tag:** 3.7.2  
 **License:** GPLv2 or later  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -71,6 +71,12 @@ By default, OpenBook will display a book cover image, title, author, and publish
 
 ## Changelog
 
+### 3.7.2
+* Fully internationalized all plugin strings (PHP and TinyMCE JavaScript editor button UI).
+* Added embedded French (fr_FR) translation files.
+* Added automatic author name transliteration (romanization) for non-Latin names with original script preserved in brackets (e.g. "Liu Cixin (刘慈欣)").
+* Fixed code style validator warnings and cleaned up old test assets.
+
 ### 3.7.1
 * Fixed GitHub Actions deployment workflow configuration.
 * Moved screenshot files to .wordpress-org folder and updated readme.md paths.
@@ -96,6 +102,9 @@ By default, OpenBook will display a book cover image, title, author, and publish
 * HTML is the default option
 
 ## Upgrade Notice
+
+### 3.7.2
+Internationalization update featuring native French translations, automatic romanization of non-Latin author names, and code style cleanups.
 
 ### 3.7.1
 Minor update fixing deployment workflow and asset paths for WordPress.org SVN repository.

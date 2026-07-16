@@ -3,7 +3,7 @@
 Plugin Name: OpenBook
 Plugin URI: https://wordpress.org/plugins/openbook-book-data
 Description: Displays a book's cover image, title, author, links, and other book data from Open Library.
-Version: 3.7.1
+Version: 3.7.2
 Requires at least: 6.3.0
 Requires PHP: 7.0
 Author: John Miedema and Philippe Guglielmetti 
@@ -70,7 +70,10 @@ function openbook_admin_js_variables() {
 			'revision_must_be_number': <?php echo wp_json_encode( __( 'Revision must be blank or a number', 'openbook' ) ); ?>,
 			'please_wait': <?php echo wp_json_encode( __( '... please wait ...', 'openbook' ) ); ?>,
 			'book_number': <?php echo wp_json_encode( __( 'Book Number', 'openbook' ) ); ?>,
-			'book_number_desc': <?php echo wp_json_encode( sprintf( __( 'Select type (usually ISBN) and enter number. You can look the number up at %1$sOpen Library%2$s. If the book is not there, %3$sadd it%4$s.', 'openbook' ), '<a href="http://openlibrary.org/" target="_blank">', '</a>', '<a href="http://openlibrary.org/books/add" target="_blank">', '</a>' ) ); ?>,
+			'book_number_desc': <?php
+				/* translators: 1: link to Open Library website, 2: closing link tag, 3: link to add book on Open Library, 4: closing link tag */
+				echo wp_json_encode( sprintf( __( 'Select type (usually ISBN) and enter number. You can look the number up at %1$sOpen Library%2$s. If the book is not there, %3$sadd it%4$s.', 'openbook' ), '<a href="http://openlibrary.org/" target="_blank">', '</a>', '<a href="http://openlibrary.org/books/add" target="_blank">', '</a>' ) );
+			?>,
 			'isbn': <?php echo wp_json_encode( __( 'ISBN (10 or 13 digits)', 'openbook' ) ); ?>,
 			'lccn': <?php echo wp_json_encode( __( 'LCCN', 'openbook' ) ); ?>,
 			'oclc': <?php echo wp_json_encode( __( 'OCLC', 'openbook' ) ); ?>,
@@ -78,7 +81,10 @@ function openbook_admin_js_variables() {
 			'revision_number': <?php echo wp_json_encode( __( 'Revision Number', 'openbook' ) ); ?>,
 			'revision_number_desc': <?php echo wp_json_encode( __( 'If the Book Number type is Open Library Key, you can specify a revision number, else the most recent version is used.', 'openbook' ) ); ?>,
 			'template_number': <?php echo wp_json_encode( __( 'Template Number', 'openbook' ) ); ?>,
-			'template_number_desc': <?php echo wp_json_encode( sprintf( __( 'Select an OpenBook template number. Matches the template on the %1$sOpenBook Settings%2$s page.', 'openbook' ), '<a href="../wp-admin/options-general.php?page=openbook_options.php" target="_blank">', '</a>' ) ); ?>,
+			'template_number_desc': <?php
+				/* translators: 1: link to OpenBook Settings page, 2: closing link tag */
+				echo wp_json_encode( sprintf( __( 'Select an OpenBook template number. Matches the template on the %1$sOpenBook Settings%2$s page.', 'openbook' ), '<a href="../wp-admin/options-general.php?page=openbook_options.php" target="_blank">', '</a>' ) );
+			?>,
 			'publisher_url': <?php echo wp_json_encode( __( 'Publisher URL', 'openbook' ) ); ?>,
 			'publisher_url_desc': <?php echo wp_json_encode( __( 'Optional. If you enter a publisher URL it will be used in the OpenBook publisher display element.', 'openbook' ) ); ?>,
 			'html_or_shortcode': <?php echo wp_json_encode( __( 'HTML (recommended) or Shortcode', 'openbook' ) ); ?>,
